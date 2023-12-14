@@ -40,7 +40,7 @@
 #include <KeyFrame.h>
 #include <Converter.h>
 
-//access to slam objects 
+//access to slam objects
 static cv::Mat pose;
 static cv::Mat frameCV;
 static sb_uint2 inputSize;
@@ -100,7 +100,7 @@ static const int default_max_features=1000;
 static int pyramid_levels;
 static const int default_pyramid_levels=8;
 static float scale_factor;
-static const float default_scale_factor=1.2;    
+static const float default_scale_factor=1.2;
 static int initial_fast_threshold;
 static const int default_initial_fast_threshold=20;
 static int second_fast_threshold;
@@ -137,13 +137,13 @@ template<> inline void  TypedParameter<orbslam_input_mode>::copyValue(orbslam_in
 template<> inline void  TypedParameter<orbslam_input_mode>::setValue(const char* optarg)  {
 
 	if (std::string(optarg) == "auto")
-	{*((orbslam_input_mode*)_ptr) = orbslam_input_mode::automatic;}
+	{*((orbslam_input_mode*)ptr_) = orbslam_input_mode::automatic;}
 	else if (std::string(optarg) == "mono")
-	{*((orbslam_input_mode*)_ptr) = orbslam_input_mode::mono;}
+	{*((orbslam_input_mode*)ptr_) = orbslam_input_mode::mono;}
 	else if (std::string(optarg) == "stereo")
-	{*((orbslam_input_mode*)_ptr) = orbslam_input_mode::stereo;}
+	{*((orbslam_input_mode*)ptr_) = orbslam_input_mode::stereo;}
 	else if (std::string(optarg) == "rgbd")
-	{*((orbslam_input_mode*)_ptr) = orbslam_input_mode::rgbd;}
+	{*((orbslam_input_mode*)ptr_) = orbslam_input_mode::rgbd;}
 	else
 	{throw std::logic_error("The argument you gave for ORBSLAM Mode is incorrect, only 'auto', 'mono', 'stereo' or 'rgbd' are valid.");}
 };
@@ -206,7 +206,7 @@ bool sb_init_slam_system(SLAMBenchLibraryHelper * slam_settings)  {
 	  if (rgb_sensor && depth_sensor) input_mode = orbslam_input_mode::rgbd;
 	  if (grey_sensor_one && grey_sensor_two) input_mode = orbslam_input_mode::stereo;
 	}
-	  
+
 
 	//=========================================================================
 	// We parametrize ORBSLAM2 given the current mode
@@ -553,12 +553,12 @@ bool depth_ready = false, rgb_ready = false, grey_one_ready = false , grey_two_r
 bool sb_update_frame (SLAMBenchLibraryHelper * , slambench::io::SLAMFrame* s) {
 	assert(s != nullptr);
 	if(s->FrameSensor == depth_sensor and imD) {
-		memcpy(imD->data, s->GetData(), s->GetSize());		
+		memcpy(imD->data, s->GetData(), s->GetSize());
 		depth_ready = true;
-		s->FreeData();			
+		s->FreeData();
 	} else if(s->FrameSensor == rgb_sensor and imRGB) {
 		memcpy(imRGB->data, s->GetData(), s->GetSize());
-		rgb_ready = true;		
+		rgb_ready = true;
 		s->FreeData();
 	} else if(s->FrameSensor == grey_sensor_one and img_one) {
 		memcpy(img_one->data, s->GetData(), s->GetSize());
