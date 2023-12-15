@@ -9,24 +9,7 @@ ADD_SUBDIRECTORY(Thirdparty/g2o)
 
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}    -O3 -march=native -Wno-error=unused-parameter -Wno-error=unused-variable ")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}   -O3 -march=native -Wno-error=unused-parameter -Wno-error=unused-variable ")
-
-# Check C++11 or C++0x support
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-if(COMPILER_SUPPORTS_CXX11)
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-   add_definitions(-DCOMPILEDWITHC11)
-   message(STATUS "Using flag -std=c++11.")
-elseif(COMPILER_SUPPORTS_CXX0X)
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-   add_definitions(-DCOMPILEDWITHC0X)
-   message(STATUS "Using flag -std=c++0x.")
-else()
-   message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
-endif()
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}   -O3 -std=c++11 -march=native -Wno-error=unused-parameter -Wno-error=unused-variable ")
 
 find_package(OpenCV 3.0 QUIET)
 if(NOT OpenCV_FOUND)
@@ -76,6 +59,7 @@ add_library(${PROJECT_NAME}-original SHARED
 
 target_link_libraries(${PROJECT_NAME}-original
   ${PROJECT_NAME}
+  ${SLAMBENCH_LIBRARIES}
   )
 target_link_libraries(${PROJECT_NAME}
 ${OpenCV_LIBS}
